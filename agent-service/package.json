@@ -1,0 +1,22 @@
+{
+  "name": "agent-vault-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "ethers": "^6.11.1",
+    "zod": "^3.23.8",
+    "dotenv": "^16.4.5",
+    "@anthropic-ai/sdk": "^0.39.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "tsx": "^4.7.0",
+    "@types/node": "^20.12.12"
+  }
+}

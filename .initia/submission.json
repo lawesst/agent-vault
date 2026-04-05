@@ -1,0 +1,12 @@
+{
+  "project_name": "Agent Vault",
+  "repo_url": "",
+  "commit_sha": "",
+  "rollup_chain_id": "",
+  "deployed_address": "",
+  "vm": "evm",
+  "native_feature": "auto-signing",
+  "core_logic_path": "contracts/src/AgentVault.sol",
+  "native_feature_frontend_path": "frontend/src/components/AutoSignToggle.tsx",
+  "demo_video_url": ""
+}

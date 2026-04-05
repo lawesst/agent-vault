@@ -1,0 +1,16 @@
+{
+  "name": "agent-vault",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered DeFi Agent Marketplace on Initia",
+  "workspaces": [
+    "agent-service",
+    "frontend"
+  ],
+  "scripts": {
+    "build:contracts": "cd contracts && forge build",
+    "test:contracts": "cd contracts && forge test -vvv",
+    "dev:agent": "cd agent-service && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev"
+  }
+}
