@@ -30,7 +30,7 @@ export function AgentCard({ agent, onClick }: AgentCardProps) {
         <div className="stat">
           <span className="stat-label">Total P&L</span>
           <span className={`stat-value ${pnl >= 0 ? "positive" : "negative"}`}>
-            {pnl >= 0 ? "+" : ""}{pnl.toFixed(4)} ETH
+            {pnl >= 0 ? "+" : ""}{pnl.toFixed(4)} GAS
           </span>
         </div>
       </div>

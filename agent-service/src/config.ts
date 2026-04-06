@@ -1,7 +1,7 @@
 import { z } from "zod";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ override: true });
 
 const EnvSchema = z.object({
   RPC_URL: z.string().url(),

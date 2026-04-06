@@ -34,7 +34,7 @@ export function DepositModal({ vaultAddress, onClose }: DepositModalProps) {
         <h3>Deposit Funds</h3>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Amount (INIT)</label>
+            <label>Amount (GAS)</label>
             <input
               type="number"
               step="0.0001"

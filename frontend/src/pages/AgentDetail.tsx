@@ -89,7 +89,7 @@ export function AgentDetail() {
           <div className="info-row">
             <span className="info-label">Total P&L</span>
             <span className={`info-value ${pnl >= 0 ? "positive" : "negative"}`}>
-              {pnl >= 0 ? "+" : ""}{pnl.toFixed(4)} INIT
+              {pnl >= 0 ? "+" : ""}{pnl.toFixed(4)} GAS
             </span>
           </div>
           <div className="info-row">

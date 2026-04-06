@@ -38,7 +38,7 @@ export function WithdrawModal({ vaultAddress, balance, onClose }: WithdrawModalP
         <h3>Withdraw Funds</h3>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Amount (INIT) — Max: {Number(maxAmount).toFixed(4)}</label>
+            <label>Amount (GAS) — Max: {Number(maxAmount).toFixed(4)}</label>
             <input
               type="number"
               step="0.0001"
