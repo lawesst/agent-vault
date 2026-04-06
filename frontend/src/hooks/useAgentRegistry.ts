@@ -1,4 +1,4 @@
-import { useReadContract, useReadContracts } from "wagmi";
+import { useReadContract } from "wagmi";
 import { CONTRACTS, AgentRegistryABI } from "../lib/contracts";
 
 export interface AgentInfo {

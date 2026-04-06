@@ -1,9 +1,9 @@
 {
   "project_name": "Agent Vault",
-  "repo_url": "",
-  "commit_sha": "",
-  "rollup_chain_id": "",
-  "deployed_address": "",
+  "repo_url": "https://github.com/lawesst/agent-vault",
+  "commit_sha": "1cd1ce9",
+  "rollup_chain_id": "1",
+  "deployed_address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
   "vm": "evm",
   "native_feature": "auto-signing",
   "core_logic_path": "contracts/src/AgentVault.sol",

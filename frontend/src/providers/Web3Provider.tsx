@@ -4,7 +4,7 @@ import { InterwovenKitProvider, injectStyles } from "@initia/interwovenkit-react
 import { agentVaultChain } from "../lib/chains";
 import type { ReactNode } from "react";
 
-injectStyles();
+injectStyles("");
 
 const config = createConfig({
   chains: [agentVaultChain],

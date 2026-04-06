@@ -6,6 +6,7 @@ import { AutoSignToggle } from "../components/AutoSignToggle";
 import { useState } from "react";
 import { DepositModal } from "../components/DepositModal";
 import { WithdrawModal } from "../components/WithdrawModal";
+import { useVaultInfo } from "../hooks/useAgentVault";
 
 export function Dashboard() {
   const { address } = useAccount();
@@ -14,6 +15,7 @@ export function Dashboard() {
   const [selectedVault, setSelectedVault] = useState<`0x${string}` | null>(null);
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
+  const { data: selectedVaultInfo } = useVaultInfo(selectedVault ?? undefined);
 
   if (!address) {
     return (
@@ -88,7 +90,7 @@ export function Dashboard() {
       {showWithdraw && selectedVault && (
         <WithdrawModal
           vaultAddress={selectedVault}
-          balance={0n}
+          balance={selectedVaultInfo ? (selectedVaultInfo as unknown as [string, string, bigint, bigint, bigint, bigint, boolean])[2] : 0n}
           onClose={() => setShowWithdraw(false)}
         />
       )}
