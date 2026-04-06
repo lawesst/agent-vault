@@ -1,7 +1,7 @@
 {
   "project_name": "Agent Vault",
   "repo_url": "https://github.com/lawesst/agent-vault",
-  "commit_sha": "1cd1ce9",
+  "commit_sha": "e1dbb68",
   "rollup_chain_id": "2366308924129336",
   "deployed_address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
   "vm": "evm",
