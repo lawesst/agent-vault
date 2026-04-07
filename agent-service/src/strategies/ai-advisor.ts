@@ -1,4 +1,3 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { ethers } from "ethers";
 import type { VaultState, PoolState } from "../services/chain-reader.js";
 import type { StrategyAnalysis } from "./base-strategy.js";
@@ -8,10 +7,12 @@ import type { StrategyAnalysis } from "./base-strategy.js";
  * Per Initia hackathon AI track guidance: AI runs off-chain, blockchain handles state/ownership.
  */
 export class AIAdvisor {
-  private client: Anthropic | null;
+  private apiKey: string | null;
+  private model: string;
 
-  constructor(apiKey?: string) {
-    this.client = apiKey ? new Anthropic({ apiKey }) : null;
+  constructor(apiKey?: string, model = "gpt-4o-mini") {
+    this.apiKey = apiKey ?? null;
+    this.model = model;
   }
 
   async enhanceAnalysis(
@@ -19,7 +20,7 @@ export class AIAdvisor {
     pools: [PoolState, PoolState],
     baseAnalysis: StrategyAnalysis
   ): Promise<string> {
-    if (!this.client) {
+    if (!this.apiKey) {
       // Fallback: return base analysis reasoning without AI enhancement
       return `[Base Strategy] ${baseAnalysis.reasoning}`;
     }
@@ -28,11 +29,11 @@ export class AIAdvisor {
 
     const prompt = `You are an AI DeFi strategy advisor for Agent Vault on Initia. Analyze this vault state and provide a brief (2-3 sentence) recommendation.
 
-Vault Balance: ${ethers.formatEther(vault.balance)} INIT (idle)
+Vault Balance: ${ethers.formatEther(vault.balance)} GAS (idle)
 Pool A "${poolA.name}": ${Number(poolA.supplyRate) / 100}% APY, vault has ${ethers.formatEther(poolA.vaultBalance)} deposited
 Pool B "${poolB.name}": ${Number(poolB.supplyRate) / 100}% APY, vault has ${ethers.formatEther(poolB.vaultBalance)} deposited
-Total Deposited: ${ethers.formatEther(vault.totalDeposited)} INIT
-Current P&L: ${ethers.formatEther(vault.pnl)} INIT
+Total Deposited: ${ethers.formatEther(vault.totalDeposited)} GAS
+Current P&L: ${ethers.formatEther(vault.pnl)} GAS
 
 Base strategy decision: ${baseAnalysis.shouldAct ? "REBALANCE" : "HOLD"}
 Reasoning: ${baseAnalysis.reasoning}
@@ -40,13 +41,28 @@ Reasoning: ${baseAnalysis.reasoning}
 Provide your analysis. Be concise and actionable. Focus on the rate differential and risk.`;
 
     try {
-      const response = await this.client.messages.create({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 150,
-        messages: [{ role: "user", content: prompt }],
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: this.model,
+          max_tokens: 150,
+          messages: [{ role: "user", content: prompt }],
+        }),
       });
 
-      const aiText = response.content[0].type === "text" ? response.content[0].text : "";
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`${response.status} ${errText.slice(0, 200)}`);
+      }
+
+      const data = (await response.json()) as {
+        choices?: Array<{ message?: { content?: string } }>;
+      };
+      const aiText = data.choices?.[0]?.message?.content?.trim() ?? "";
       return `[AI Analysis] ${aiText}`;
     } catch (error: any) {
       console.warn("AI advisor fallback:", error.message);

@@ -12,12 +12,12 @@ async function main() {
   console.log("Agent Vault Service starting...");
   console.log(`  RPC: ${env.RPC_URL}`);
   console.log(`  Poll interval: ${env.POLL_INTERVAL_SEC}s`);
-  console.log(`  AI: ${env.ANTHROPIC_API_KEY ? "enabled" : "disabled (no API key)"}`);
+  console.log(`  AI: ${env.OPENAI_API_KEY ? "enabled (OpenAI)" : "disabled (no API key)"}`);
 
   const reader = new ChainReader(env);
   const executor = new VaultExecutor(env);
   const strategy = new YieldRebalancer();
-  const aiAdvisor = new AIAdvisor(env.ANTHROPIC_API_KEY);
+  const aiAdvisor = new AIAdvisor(env.OPENAI_API_KEY);
 
   // Derive agent address from private key
   const agentWallet = new ethers.Wallet(env.AGENT_PRIVATE_KEY);

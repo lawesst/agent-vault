@@ -11,7 +11,7 @@ const EnvSchema = z.object({
   MOCK_POOL_A_ADDRESS: z.string().startsWith("0x"),
   MOCK_POOL_B_ADDRESS: z.string().startsWith("0x"),
   POLL_INTERVAL_SEC: z.string().transform(Number).default("30"),
-  ANTHROPIC_API_KEY: z.string().optional(),
+  OPENAI_API_KEY: z.string().optional(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
