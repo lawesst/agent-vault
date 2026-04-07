@@ -1,4 +1,5 @@
 import { formatEther } from "viem";
+import { useUsernameQuery } from "@initia/interwovenkit-react";
 import type { AgentInfo } from "../hooks/useAgentRegistry";
 
 interface AgentCardProps {
@@ -9,6 +10,10 @@ interface AgentCardProps {
 export function AgentCard({ agent, onClick }: AgentCardProps) {
   const feePercent = Number(agent.feeRate) / 100;
   const pnl = Number(formatEther(agent.totalPnL));
+  const { data: username } = useUsernameQuery(agent.operator);
+  const displayName = username
+    ? `${username}.init`
+    : `${agent.operator.slice(0, 6)}...${agent.operator.slice(-4)}`;
 
   return (
     <div className="agent-card" onClick={onClick}>
@@ -34,9 +39,7 @@ export function AgentCard({ agent, onClick }: AgentCardProps) {
           </span>
         </div>
       </div>
-      <p className="agent-card-address">
-        {agent.operator.slice(0, 6)}...{agent.operator.slice(-4)}
-      </p>
+      <p className="agent-card-address">{displayName}</p>
     </div>
   );
 }

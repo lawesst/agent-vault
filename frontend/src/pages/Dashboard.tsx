@@ -6,6 +6,7 @@ import { AutoSignToggle } from "../components/AutoSignToggle";
 import { useState } from "react";
 import { DepositModal } from "../components/DepositModal";
 import { WithdrawModal } from "../components/WithdrawModal";
+import { ActivityLog } from "../components/ActivityLog";
 import { useVaultInfo } from "../hooks/useAgentVault";
 
 export function Dashboard() {
@@ -61,20 +62,23 @@ export function Dashboard() {
                 onClick={() => setSelectedVault(vaultAddr)}
               />
               {selectedVault === vaultAddr && (
-                <div className="vault-actions">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => setShowDeposit(true)}
-                  >
-                    Deposit
-                  </button>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => setShowWithdraw(true)}
-                  >
-                    Withdraw
-                  </button>
-                </div>
+                <>
+                  <div className="vault-actions">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => setShowDeposit(true)}
+                    >
+                      Deposit
+                    </button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => setShowWithdraw(true)}
+                    >
+                      Withdraw
+                    </button>
+                  </div>
+                  <ActivityLog vaultAddress={vaultAddr} />
+                </>
               )}
             </div>
           ))}
