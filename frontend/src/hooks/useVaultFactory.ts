@@ -12,8 +12,12 @@ export function useUserVaults(userAddress: `0x${string}` | undefined) {
 }
 
 export function useCreateVault() {
-  const { writeContract, data: hash, isPending, error } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
+  const { writeContract, data: hash, isPending, error: writeError } = useWriteContract();
+  const {
+    isLoading: isConfirming,
+    isSuccess,
+    error: receiptError,
+  } = useWaitForTransactionReceipt({ hash });
 
   const createVault = (agent: `0x${string}`, allowedTargets: `0x${string}`[]) => {
     writeContract({
@@ -24,7 +28,14 @@ export function useCreateVault() {
     });
   };
 
-  return { createVault, hash, isPending, isConfirming, isSuccess, error };
+  return {
+    createVault,
+    hash,
+    isPending,
+    isConfirming,
+    isSuccess,
+    error: writeError ?? receiptError,
+  };
 }
 
 export function useVaultCount() {

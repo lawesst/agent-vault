@@ -12,7 +12,7 @@ export function AgentDetail() {
   const { address } = useAccount();
   const { openConnect } = useInterwovenKit();
   const { data: agent, isLoading } = useAgent(agentAddress as `0x${string}`);
-  const { createVault, isPending, isConfirming, isSuccess, error } = useCreateVault();
+  const { createVault, hash, isPending, isConfirming, isSuccess, error } = useCreateVault();
 
   if (isLoading) return <div className="page"><div className="loading-state">Loading agent...</div></div>;
   if (!agent) return <div className="page"><div className="empty-state">Agent not found</div></div>;
@@ -110,6 +110,12 @@ export function AgentDetail() {
         </div>
 
         {error && <p className="error">{error.message}</p>}
+        {hash && (
+          <p className="info-text">
+            Tx submitted: <code>{hash.slice(0, 10)}…{hash.slice(-8)}</code>
+            {isConfirming && " (waiting for confirmation…)"}
+          </p>
+        )}
 
         <button
           className="btn btn-primary btn-large"
@@ -124,6 +130,16 @@ export function AgentDetail() {
             ? "Creating Vault..."
             : "Create Vault with This Agent"}
         </button>
+
+        {(isConfirming || hash) && (
+          <button
+            className="btn btn-link"
+            style={{ marginTop: "12px" }}
+            onClick={() => navigate("/dashboard")}
+          >
+            Already created? Go to Dashboard →
+          </button>
+        )}
       </div>
     </div>
   );
