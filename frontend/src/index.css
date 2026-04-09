@@ -119,14 +119,43 @@ body {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  outline: none;
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:focus { outline: none; }
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
 .btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+@media (hover: hover) {
+  .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+}
+.btn-primary:active:not(:disabled) { background: var(--primary-hover); }
+
 .btn-secondary { background: var(--bg-hover); color: var(--text); border: 1px solid var(--border); }
-.btn-secondary:hover:not(:disabled) { border-color: var(--primary); }
+@media (hover: hover) {
+  .btn-secondary:hover:not(:disabled) { border-color: var(--primary); background: var(--bg-hover); }
+}
+.btn-secondary:active:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--border);
+}
+
 .btn-danger { background: var(--danger); color: white; }
+@media (hover: hover) {
+  .btn-danger:hover:not(:disabled) { background: #dc2626; }
+}
+.btn-danger:active:not(:disabled) { background: #dc2626; }
+
 .btn-large { padding: 14px 32px; font-size: 16px; width: 100%; margin-top: 24px; }
 .btn-link { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 14px; padding: 0; }
 
@@ -206,6 +235,27 @@ body {
 .form-group input:focus { outline: none; border-color: var(--primary); }
 .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
 
+/* Skeletons */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.skeleton-card { cursor: default; pointer-events: none; }
+.skeleton-card:hover { border-color: var(--border); background: var(--bg-card); }
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-hover) 0%, var(--border) 50%, var(--bg-hover) 100%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton-title { height: 20px; width: 60%; margin-bottom: 16px; }
+.skeleton-line { height: 14px; width: 100%; margin-bottom: 10px; }
+.skeleton-line.short { width: 40%; }
+
 /* States */
 .loading-state, .empty-state, .success-state {
   text-align: center;
@@ -215,6 +265,32 @@ body {
 .success-state h2 { color: var(--positive); margin-bottom: 12px; }
 .error { color: var(--negative); font-size: 14px; margin-top: 8px; }
 .info-text { font-size: 13px; color: var(--text-muted); }
+
+.empty-state.error-state {
+  border: 1px solid var(--negative);
+  background: color-mix(in srgb, var(--negative) 8%, transparent);
+  border-radius: var(--radius);
+  color: var(--text);
+  max-width: 560px;
+  margin: 24px auto;
+  padding: 32px 28px;
+}
+.empty-state.error-state h3 {
+  color: var(--negative);
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+.empty-state.error-state p { margin-bottom: 10px; line-height: 1.5; }
+.empty-state.error-state code {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text);
+}
+.empty-state.error-state .error-hint { color: var(--text-muted); font-size: 13px; }
+.empty-state.error-state .btn { margin-top: 12px; }
 
 h2 { margin-bottom: 16px; }
 
