@@ -14,35 +14,63 @@ AI-powered DeFi Agent Marketplace on Initia. Users deposit funds into vaults, gr
 
 ### Local Execution
 
-1. **Set up the Minitia:**
+Prerequisites: Docker Desktop, Go 1.22+, Node.js 20+, and [Foundry](https://book.getfoundry.sh/getting-started/installation).
+
+1. **Set up the Minitia** (one-time, via Initia's [Weave CLI](https://github.com/initia-labs/weave)):
    ```bash
-   # Install prerequisites: Docker Desktop, Go 1.22+, Foundry
-   # Install Initia tooling and run:
-   weave init  # Select EVM rollup
+   weave init              # select EVM rollup
    weave opinit init executor
    weave relayer init
    ```
 
-2. **Deploy contracts:**
+2. **Start the chain:**
+   ```bash
+   minitiad start
+   # JSON-RPC will be listening on http://localhost:8545
+   ```
+
+3. **Deploy contracts** (run once against a fresh chain so the deterministic
+   addresses in `.env.example` match):
    ```bash
    cd contracts
    forge build
-   # Deploy via minitiad tx evm create (see docs)
+
+   # DEPLOYER_KEY is Anvil's canonical test key 0 (funded on a fresh Minitia).
+   export DEPLOYER_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
+   forge script script/Deploy.s.sol:Deploy \
+     --rpc-url http://localhost:8545 \
+     --private-key $DEPLOYER_KEY \
+     --broadcast -vvv
    ```
 
-3. **Start the frontend:**
+   The script prints the four deployed addresses — copy them into
+   `frontend/.env` and `agent-service/.env` (or use the defaults in
+   `.env.example`, which already match the canonical first-four-nonces
+   addresses).
+
+4. **Start the frontend:**
    ```bash
    cd frontend
-   cp .env.example .env  # Fill in contract addresses
-   npm install && npm run dev
+   cp .env.example .env   # already wired to the canonical addresses
+   npm install
+   npm run dev            # → http://localhost:5173
    ```
 
-4. **Start the agent service:**
+5. **Start the agent service:**
    ```bash
    cd agent-service
-   cp .env.example .env  # Fill in contract addresses + agent key
-   npm install && npm run dev
+   cp .env.example .env   # add your OPENAI_API_KEY
+   npm install
+   npm run dev
    ```
+
+6. **Smoke test the full stack** (optional but recommended):
+   ```bash
+   ./scripts/e2e-smoke-test.sh
+   ```
+   Registers an agent, creates a vault, deposits 1B GAS, triggers a
+   strategy execution, and verifies events were emitted.
 
 ## Architecture
 
