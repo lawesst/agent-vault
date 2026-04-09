@@ -20,12 +20,17 @@ const config = createConfig({
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Keep contract reads fresh for 30s and cached for 5min so navigating
-      // between pages doesn't trigger a fresh RPC round-trip every time.
-      staleTime: 30_000,
+      // Short stale window so back-navigation after a write (e.g. creating
+      // a vault) surfaces the new state without the user having to manually
+      // refresh. gcTime keeps cached data around for 5min so in-session
+      // revisits are still fast. `refetchOnMount: "always"` guarantees the
+      // query re-runs whenever a component that needs it mounts — crucial
+      // for the Dashboard, which was previously showing a stale empty list
+      // of vaults after a successful createVault transaction.
+      staleTime: 5_000,
       gcTime: 5 * 60_000,
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
+      refetchOnMount: "always",
       retry: 1,
     },
   },
